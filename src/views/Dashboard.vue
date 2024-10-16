@@ -1,95 +1,77 @@
+<!-- src/pages/Dashboard.vue -->
 <template>
-      <Navbar />
+  <!-- Navbar at the top of the page -->
+  <Navbar />
+
+  <!-- Main content area with sidebar and page content -->
   <div class="flex min-h-screen bg-gray-100">
-    <aside class="w-64 bg-blue-900 p-6 text-white">
-      <h2 class="text-2xl font-semibold">School ERP</h2>
-      <nav class="mt-6">
-        <ul>
-          <li>
-            <router-link to="/students" class="flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-user-graduate mr-2"></i> <!-- Student Icon -->
-              Students
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/teachers" class="flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-chalkboard-teacher mr-2"></i> <!-- Teacher Icon -->
-              Teachers
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/classes" class="flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-school mr-2"></i> <!-- Class Icon -->
-              Classes
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/subjects" class="flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-book mr-2"></i> <!-- Subject Icon -->
-              Subjects
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/timetable" class="flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-calendar-alt mr-2"></i> <!-- Timetable Icon -->
-              Timetable
-            </router-link>
-          </li>
-          <li>
-            <button @click="logout" class="block w-full text-left py-2 px-4 hover:bg-red-600">
-              <i class="fas fa-sign-out-alt mr-2"></i> Logout
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+    <!-- Sidebar -->
+    <Sidebar />
+
+    <!-- Main content area for the Dashboard page -->
     <main class="flex-1 p-6">
       <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Card Example -->
-        <div class="bg-white shadow-md rounded-lg p-4">
-          <div class="flex items-center">
-            <i class="fas fa-user-graduate text-blue-500 text-3xl mr-3"></i>
-            <div>
-              <h3 class="text-lg font-semibold">Total Students</h3>
-              <p class="text-gray-500">150</p>
-            </div>
+
+      <!-- Dashboard content -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card for Total Students -->
+        <div class="p-6 bg-white rounded-lg shadow-lg flex items-center">
+          <span class="text-4xl mr-4">👩‍🎓</span>
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Total Students</h3>
+            <p class="text-2xl font-bold">{{ totalStudents }}</p>
           </div>
         </div>
-        <div class="bg-white shadow-md rounded-lg p-4">
-          <div class="flex items-center">
-            <i class="fas fa-chalkboard-teacher text-blue-500 text-3xl mr-3"></i>
-            <div>
-              <h3 class="text-lg font-semibold">Total Teachers</h3>
-              <p class="text-gray-500">20</p>
-            </div>
+
+        <!-- Card for Total Teachers -->
+        <div class="p-6 bg-white rounded-lg shadow-lg flex items-center">
+          <span class="text-4xl mr-4">👨‍🏫</span>
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Total Teachers</h3>
+            <p class="text-2xl font-bold">{{ totalTeachers }}</p>
           </div>
         </div>
-        <div class="bg-white shadow-md rounded-lg p-4">
-          <div class="flex items-center">
-            <i class="fas fa-school text-blue-500 text-3xl mr-3"></i>
-            <div>
-              <h3 class="text-lg font-semibold">Total Classes</h3>
-              <p class="text-gray-500">10</p>
-            </div>
+
+        <!-- Card for Active Classes -->
+        <div class="p-6 bg-white rounded-lg shadow-lg flex items-center">
+          <span class="text-4xl mr-4">📚</span>
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Active Classes</h3>
+            <p class="text-2xl font-bold">{{ activeClasses }}</p>
           </div>
         </div>
       </div>
-      <router-view />
     </main>
   </div>
+
+  <!-- Footer at the bottom of the page -->
   <Footer />
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import Navbar from '@/components/Navbar.vue'; // Adjust the path according to your project structure
-import Footer from '@/components/Footer.vue'; // Adjust the path according to your project structure
-</script>
+import { ref, onMounted } from "vue";
+import Navbar from "@/components/Navbar.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import Footer from "@/components/Footer.vue";
 
-<style scoped>
-/* Optional styles for better visuals */
-aside {
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-</style>
+const totalStudents = ref(0); // Placeholder for total students
+const totalTeachers = ref(0); // Placeholder for total teachers
+const activeClasses = ref(0); // Placeholder for active classes
+
+// Fetch total teachers from the API
+const fetchTeachersCount = async () => {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/teachers/");
+    const data = await response.json();
+    totalTeachers.value = data.length; // Assuming the API returns a list of teachers
+  } catch (error) {
+    console.error("Error fetching teachers:", error);
+  }
+};
+
+// Fetch the data when the component is mounted
+onMounted(() => {
+  fetchTeachersCount();
+  // Fetch other data like total students and active classes as needed
+});
+</script>

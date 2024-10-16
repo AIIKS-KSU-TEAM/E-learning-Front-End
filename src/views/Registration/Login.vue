@@ -1,43 +1,27 @@
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router'; 
-import Navbar from '@/components/Navbar.vue';
-import Footer from '@/components/Footer.vue';
+import useAuth from "@/composables/useAuth";
 
-const username = ref('');
-const password = ref('');
-const router = useRouter();
-
-const login = async () => {
-  try {
-    const response = await axios.post('http://127.0.0.1:8000/api/auth/token/', {
-      username: username.value,
-      password: password.value    
-    });
-    alert('Login successful');
-    // Store token or handle session as needed
-    router.push('/dashboard'); 
-  } catch (error) {
-    console.error(error);
-    alert('Login failed. Please try again.');
-  }
-};
+const { username, password, login } = useAuth();
 </script>
 
 <template>
   <div>
     <div class="flex items-center justify-center min-h-screen bg-gray-500">
-      <form @submit.prevent="login" class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+      <form
+        @submit.prevent="login"
+        class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full"
+      >
         <img
-            src="@/assets/images/logo.jpg"
-            class="img-fluid rounded h-12 mx-auto "
-            alt="AI AA NGO"
-          />
+          src="@/assets/images/logo.jpg"
+          class="img-fluid rounded h-12 mx-auto"
+          alt="AI AA NGO"
+        />
         <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Login</h2>
-        
+
         <div class="mb-4">
-          <label for="username" class="block text-md font-medium text-gray-700">Username:</label>
+          <label for="username" class="block text-md font-medium text-gray-700"
+            >Username:</label
+          >
           <input
             v-model="username"
             type="text"
@@ -49,7 +33,9 @@ const login = async () => {
         </div>
 
         <div class="mb-4">
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <label for="password" class="block text-sm font-medium text-gray-700"
+            >Password</label
+          >
           <input
             v-model="password"
             type="password"
@@ -68,8 +54,10 @@ const login = async () => {
         </button>
 
         <p class="mt-4 text-center text-gray-600">
-          Don't have an account? 
-          <router-link to="/signup" class="text-blue-500 hover:underline">Sign up</router-link>
+          Don't have an account?
+          <router-link to="/signup" class="text-blue-500 hover:underline"
+            >Sign up</router-link
+          >
         </p>
       </form>
     </div>
@@ -77,7 +65,7 @@ const login = async () => {
 </template>
 
 <style scoped>
-img{
+img {
   width: 100px;
   height: auto;
 }

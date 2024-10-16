@@ -13,6 +13,8 @@ dist
 dist-ssr
 coverage
 *.local
+.prettierrc
+.prettierignore
 
 /cypress/videos/
 /cypress/screenshots/
