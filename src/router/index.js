@@ -8,6 +8,9 @@ import CourseList from "@/views/Courses/CourseList.vue";
 import Teacher from "@/views/Teachers/ListTeachers.vue";
 import TeacherCreate from "@/views/Teachers/CreateTeacher.vue";
 import CourseForm from "@/views/Courses/CourseForm.vue";
+import ModuleContent from "@/views/Courses/ModuleContent.vue";
+import Course from "@/views/Courses/Course.vue";
+import CourseM from "@/views/Courses/CourseM.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +19,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+    },
+    {
+      path: "/coursel",
+      name: "coursel",
+      component: CourseM,
     },
     {
       path: "/login",
@@ -31,6 +39,11 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
+    },
+    {
+      path: "/course",
+      name: "course",
+      component: Course,
     },
     {
       path: "/course-list",
@@ -56,6 +69,11 @@ const router = createRouter({
       path: "/create-teacher",
       name: "create-teacher",
       component: TeacherCreate,
+    },
+    {
+      path: '/module/:module_id/content',
+      component: ModuleContent,
+      name: 'moduleContent'
     },
     {
       path: "/",

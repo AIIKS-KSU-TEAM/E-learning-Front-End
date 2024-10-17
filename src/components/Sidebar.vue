@@ -39,10 +39,10 @@
         </li>
         <li>
           <router-link
-            to="/timetable"
+            to="/course"
             class="flex items-center py-2 px-4 hover:bg-blue-700"
           >
-            <i class="fas fa-calendar-alt mr-2"></i> Timetable
+            <i class="fas fa-calendar-alt mr-2"></i> Module
           </router-link>
         </li>
         <li>
