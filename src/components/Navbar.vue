@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 const isNavbarCollapsed = ref(true);
-const isSubMenuCollapsed = ref(true); // State for the sub-navbar menu
+const isSubMenuCollapsed = ref(true); 
 </script>
 
 <template>
@@ -11,18 +11,18 @@ const isSubMenuCollapsed = ref(true); // State for the sub-navbar menu
       <!-- Location with Icon -->
       <div class="flex items-center text-white mt-1">
         <i class="fas fa-map-marker-alt mr-2"></i>
-        <span class="hidden lg:inline">Nairobi, Kenya</span>
+        <span class="hidden lg:inline">Kisii, Kenya</span>
         <!-- Hidden on small screens -->
       </div>
 
       <div class="flex">
-        <a href="/gallery" class="text-black mr-2">
+        <a href="/courses" class="text-black mr-2">
           <button
             class="bg-transparent text-black border border-black py-1 px-4 rounded hover:bg-white hover:text-blue-600 transition duration-300 flex items-center"
           >
-            <i class="fas fa-images d-inline-block lg:hidden"></i>
+            <i class="fas fa-book d-inline-block lg:hidden"></i>
             <!-- Show only icon on small screens -->
-            <span class="hidden lg:inline">Gallery</span>
+            <span class="hidden lg:inline">Courses</span>
             <!-- Show text only on large screens -->
           </button>
         </a>
@@ -43,17 +43,17 @@ const isSubMenuCollapsed = ref(true); // State for the sub-navbar menu
 
   <nav class="bg-gray-800 sticky top-0">
     <div class="container mx-auto flex justify-between items-center p-4">
-      <a class="navbar-brand flex items-center" href="/">
+      <a class="navbar-brand flex items-center" href="/home">
         <div class="flex items-center">
           <div class="text-2xl font-bold text-white">
-            ER<span class="text-blue-500">P</span>
+            E-<span class="text-blue-500">Learning</span>
           </div>
           <div
             class="h-14 w-1 bg-gradient-to-b from-white to-blue-500 mx-2"
           ></div>
           <div class="text-left text-gray-200">
-            <div class="text-sm">Precious Blood</div>
-            <div class="text-sm">Girls, Riruta</div>
+            <div class="text-sm">Empower Your Knowledge</div>
+            <div class="text-sm">Learn Anytime, Anywhere</div>
           </div>
         </div>
       </a>
@@ -73,7 +73,7 @@ const isSubMenuCollapsed = ref(true); // State for the sub-navbar menu
         <div class="flex justify-center flex-grow">
           <ul class="flex space-x-4">
             <li>
-              <a class="text-gray-200 hover:text-white" href="/">Home</a>
+              <a class="text-gray-200 hover:text-white" href="/home">Home</a>
             </li>
             <li>
               <a class="text-gray-200 hover:text-white" href="/about"
@@ -81,21 +81,21 @@ const isSubMenuCollapsed = ref(true); // State for the sub-navbar menu
               >
             </li>
             <li>
-              <a class="text-gray-200 hover:text-white" href="/impact"
-                >Our Impact</a
+              <a class="text-gray-200 hover:text-white" href="/course"
+                >Our Courses</a
               >
             </li>
             <li>
-              <a class="text-gray-200 hover:text-white" href="/blog">Blog</a>
+              <a class="text-gray-200 hover:text-white" href="/resources">Resources</a>
             </li>
           </ul>
         </div>
         <div class="ml-auto">
-          <a href="/get-involved">
+          <a href="/register">
             <button
               class="border border-white text-white py-2 px-4 rounded hover:bg-white hover:text-green-600 transition duration-300"
             >
-              Get Involved
+              Get Started
             </button>
           </a>
         </div>
