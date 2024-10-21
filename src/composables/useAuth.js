@@ -1,21 +1,30 @@
 import { ref } from "vue";
 import axiosInstance from "@/axiosconfig/axiosInstance";
 import { useRouter } from "vue-router";
+import { useLocalStorage } from "@vueuse/core";
 
 const useAuth = () => {
   const username = ref("");
+  const email = ref("");
   const password = ref("");
   const router = useRouter();
 
+  const accessToken = useLocalStorage("access-token", null)
+  const refreshToken = useLocalStorage("refresh-token", null)
+
   const login = async () => {
     try {
-      const response = await axiosInstance.post("api/auth/token/", {
-        username: username.value,
+      const response = await axiosInstance.post("api/login/", {
+        email: email.value,
         password: password.value,
       });
-      alert("Login successful");
-      localStorage.setItem("token", response.data.access);
+
+      accessToken.value = response.data.access_token
+
+      refreshToken.value = response.data.refresh_token
+
       router.push("/dashboard");
+
     } catch (error) {
       console.error(error);
       alert("Login failed. Please try again.");
@@ -24,6 +33,7 @@ const useAuth = () => {
 
   return {
     username,
+    email,
     password,
     login,
   };

@@ -10,61 +10,28 @@
           </h2>
           <form @submit.prevent="handleSubmit">
             <div class="mb-4">
-              <label for="title" class="block text-sm font-medium text-gray-700"
-                >Title</label
-              >
-              <input
-                type="text"
-                id="title"
-                v-model="course.title"
-                required
-                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+              <input type="text" id="title" v-model="course.title" required
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:border-blue-500" />
             </div>
             <div class="mb-4">
-              <label for="slug" class="block text-sm font-medium text-gray-700"
-                >Slug</label
-              >
-              <input
-                type="text"
-                id="slug"
-                v-model="course.slug"
-                required
-                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label for="slug" class="block text-sm font-medium text-gray-700">Slug</label>
+              <input type="text" id="slug" v-model="course.slug" required
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:border-blue-500" />
             </div>
             <div class="mb-4">
-              <label
-                for="overview"
-                class="block text-sm font-medium text-gray-700"
-                >Overview</label
-              >
-              <textarea
-                id="overview"
-                v-model="course.overview"
-                required
+              <label for="overview" class="block text-sm font-medium text-gray-700">Overview</label>
+              <textarea id="overview" v-model="course.overview" required
                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:border-blue-500"
-                rows="4"
-              ></textarea>
+                rows="4"></textarea>
             </div>
             <div class="mb-4">
-              <label
-                for="subject"
-                class="block text-sm font-medium text-gray-700"
-                >Subject</label
-              >
-              <input
-                type="text"
-                id="subject"
-                v-model="course.subject"
-                required
-                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:border-blue-500"
-              />
+              <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
+              <input type="text" id="subject" v-model="course.subject" required
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:border-blue-500" />
             </div>
-            <button
-              type="submit"
-              class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
-            >
+            <button type="submit"
+              class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
               {{ isEdit ? "Update" : "Create" }}
             </button>
           </form>
@@ -104,7 +71,7 @@ export default {
 
     const fetchCourse = async (id) => {
       try {
-        const response = await axiosInstance.get(`course/courses/${id}/`);
+        const response = await axiosInstance.get(`api/course/courses/${id}/`);
         course.value = response.data;
       } catch (error) {
         console.error("Error fetching course:", error);
