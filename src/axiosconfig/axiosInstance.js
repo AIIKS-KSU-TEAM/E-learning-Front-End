@@ -1,3 +1,4 @@
+import useToken from "@/composables/useToken";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -7,10 +8,11 @@ const axiosInstance = axios.create({
   },
 });
 
+const { accessToken } = useToken()
+
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+  if (accessToken.value) {
+    config.headers["Authorization"] = `Bearer ${accessToken.value}`;
   }
   return config;
 });

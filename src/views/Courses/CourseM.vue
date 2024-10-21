@@ -40,7 +40,7 @@
       async fetchCourseContents() {
         try {
           const response = await axiosInstance.get(
-            `/course/courses/video/`
+            `api/course/courses/video/`
           );
           this.contents = response.data; 
         } catch (err) {
