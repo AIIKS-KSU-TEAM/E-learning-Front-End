@@ -51,6 +51,16 @@ const router = createRouter({
       component: CourseList,
     },
     {
+      path: "/modules",
+      name: "modules",
+      component: () => import("@/views/Modules/ModuleList.vue"),
+    },
+    {
+      path: "/modules/:id/contents/create",
+      name: "modules-contents-create",
+      component: () => import("@/views/Modules/Contents/CreateView.vue"),
+    },
+    {
       path: "/create-course",
       name: "create-course",
       component: CourseForm,

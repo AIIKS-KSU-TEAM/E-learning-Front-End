@@ -36,7 +36,7 @@
         <div class="p-6 bg-white rounded-lg shadow-lg flex items-center">
           <span class="text-4xl mr-4">📚</span>
           <div>
-            <h3 class="text-lg font-semibold mb-2">Active Classes</h3>
+            <h3 class="text-lg font-semibold mb-2">Active Courses</h3>
             <p class="text-2xl font-bold">{{ activeClasses }}</p>
           </div>
         </div>

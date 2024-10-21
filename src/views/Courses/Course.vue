@@ -187,7 +187,7 @@
     }
   
     try {
-      await axiosInstance.post(`course/courses/${selectedCourse.value}/content/`, form, {
+      await axiosInstance.post(`course/modules/${selectedCourse.value}/content/`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

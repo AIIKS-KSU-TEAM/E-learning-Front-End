@@ -39,7 +39,7 @@
         </li>
         <li>
           <router-link
-            to="/course"
+            to="/modules"
             class="flex items-center py-2 px-4 hover:bg-blue-700"
           >
             <i class="fas fa-calendar-alt mr-2"></i> Module

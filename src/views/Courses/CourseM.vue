@@ -22,9 +22,9 @@
   export default {
     data() {
       return {
-        contents: [], // Array to hold the course contents
-        loading: true, // Loading state
-        error: null, // Error state
+        contents: [], 
+        loading: true,
+        error: null, 
       };
     },
     props: {
@@ -34,7 +34,7 @@
       },
     },
     mounted() {
-      this.fetchCourseContents(); // Fetch course contents when component is mounted
+      this.fetchCourseContents();
     },
     methods: {
       async fetchCourseContents() {
@@ -42,12 +42,12 @@
           const response = await axiosInstance.get(
             `/course/courses/video/`
           );
-          this.contents = response.data; // Assign the response data to the contents array
+          this.contents = response.data; 
         } catch (err) {
-          this.error = "Failed to load contents. Please try again later."; // Handle errors
+          this.error = "Failed to load contents. Please try again later."; 
           console.error(err);
         } finally {
-          this.loading = false; // Set loading to false after fetching data
+          this.loading = false; 
         }
       },
     },
@@ -55,6 +55,5 @@
   </script>
   
   <style scoped>
-  /* Custom styles or leave blank, since Tailwind is handling the styling */
   </style>
   
