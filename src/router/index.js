@@ -4,13 +4,12 @@ import Dashboard from "@/views/Dashboard.vue";
 import Login from "@/views/Registration/Login.vue";
 import Signup from "@/views/Registration/Signup.vue";
 import HomeView from "@/views/HomeView.vue";
-import CourseList from "@/views/Courses/CourseList.vue";
 import Teacher from "@/views/Teachers/ListTeachers.vue";
 import TeacherCreate from "@/views/Teachers/CreateTeacher.vue";
-import CourseForm from "@/views/Courses/CourseForm.vue";
-import ModuleContent from "@/views/Courses/ModuleContent.vue";
-import Course from "@/views/Courses/Course.vue";
-import CourseM from "@/views/Courses/CourseM.vue";
+import Subjects from "@/views/Courses/Subjects.vue";
+import Courses from "@/views/Courses/Courses.vue";
+import Modules from "@/views/Courses/Modules.vue";
+import ModuleContents from "@/views/Courses/ModuleContents.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,11 +18,6 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
-    },
-    {
-      path: "/coursel",
-      name: "coursel",
-      component: CourseM,
     },
     {
       path: "/login",
@@ -41,34 +35,24 @@ const router = createRouter({
       component: Dashboard,
     },
     {
-      path: "/course",
-      name: "course",
-      component: Course,
+      path: '/subjects',
+      name: 'Subjects',
+      component: Subjects,
     },
     {
-      path: "/course-list",
-      name: "course-list",
-      component: CourseList,
+      path: '/courses',
+      name: 'Courses',
+      component: Courses,
     },
     {
-      path: "/modules",
-      name: "modules",
-      component: () => import("@/views/Modules/ModuleList.vue"),
+      path: '/modules',
+      name: 'Modules',
+      component: Modules,
     },
     {
-      path: "/modules/:id/contents/create",
-      name: "modules-contents-create",
-      component: () => import("@/views/Modules/Contents/CreateView.vue"),
-    },
-    {
-      path: "/create-course",
-      name: "create-course",
-      component: CourseForm,
-    },
-    {
-      path: "/edit-course/:id",
-      name: "edit-course",
-      component: CourseForm,
+      path: '/module-contents',
+      name: 'ModuleContents',
+      component: ModuleContents,
     },
     {
       path: "/teacher",
@@ -82,8 +66,8 @@ const router = createRouter({
     },
     {
       path: '/module/:module_id/content',
-      component: ModuleContent,
-      name: 'moduleContent'
+      component: ModuleContents,
+      name: 'moduleContents'
     },
     {
       path: "/",
@@ -91,7 +75,6 @@ const router = createRouter({
       children: [
         { path: "", component: Dashboard },
         { path: "teacher", component: Teacher },
-        // Add other routes here that use the layout
       ],
     },
   ],

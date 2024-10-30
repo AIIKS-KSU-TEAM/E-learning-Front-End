@@ -24,7 +24,7 @@ const useAuth = () => {
       refreshToken.value = response.data.refresh_token
 
       router.push("/dashboard");
-
+cd
     } catch (error) {
       console.error(error);
       alert("Login failed. Please try again.");
