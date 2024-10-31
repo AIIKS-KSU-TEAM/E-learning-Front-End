@@ -11,23 +11,23 @@ const { logout } = useLogout();
     <nav class="mt-6">
       <ul>
         <li>
-          <router-link to="#" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-user-graduate mr-2"></i> Students
+          <router-link to="/subjects" class="flex items-center py-2 px-4 hover:bg-blue-700">
+            <i class="fas fa-user-graduate mr-2"></i> Subjects
           </router-link>
         </li>
         <li>
-          <router-link to="/teacher" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-chalkboard-teacher mr-2"></i> Teachers
+          <router-link to="/courses" class="flex items-center py-2 px-4 hover:bg-blue-700">
+            <i class="fas fa-chalkboard-teacher mr-2"></i> Courses
           </router-link>
         </li>
         <li>
-          <router-link to="/course-list" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-book mr-2"></i> Courses
+          <router-link to="/modules" class="flex items-center py-2 px-4 hover:bg-blue-700">
+            <i class="fas fa-book mr-2"></i> Modules
           </router-link>
         </li>
         <li>
-          <router-link to="/create-course" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-school mr-2"></i> Classes
+          <router-link to="/module-contents" class="flex items-center py-2 px-4 hover:bg-blue-700">
+            <i class="fas fa-school mr-2"></i> Contents
           </router-link>
         </li>
         <li>

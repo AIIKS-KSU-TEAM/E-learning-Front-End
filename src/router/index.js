@@ -45,9 +45,10 @@ const router = createRouter({
       component: Courses,
     },
     {
-      path: '/modules',
+      path: '/modules/:courseId',
       name: 'Modules',
       component: Modules,
+      props: true, 
     },
     {
       path: '/module-contents',
@@ -63,11 +64,6 @@ const router = createRouter({
       path: "/create-teacher",
       name: "create-teacher",
       component: TeacherCreate,
-    },
-    {
-      path: '/module/:module_id/content',
-      component: ModuleContents,
-      name: 'moduleContents'
     },
     {
       path: "/",

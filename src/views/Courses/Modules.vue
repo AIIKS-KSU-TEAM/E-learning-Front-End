@@ -1,75 +1,174 @@
 <template>
-    <div class="p-4">
-      <h2 class="text-2xl font-bold mb-4">Modules</h2>
-      <form @submit.prevent="createModule" class="mb-4">
-        <select v-model="newModule.courseId" class="border rounded p-2 mr-2" required>
-          <option value="">Select Course</option>
-          <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.title }}</option>
-        </select>
-        <input v-model="newModule.title" type="text" placeholder="Module Title" class="border rounded p-2 mr-2" required />
-        <textarea v-model="newModule.description" placeholder="Module Description" class="border rounded p-2 mr-2" required></textarea>
-        <button type="submit" class="bg-blue-500 text-white rounded p-2">Add Module</button>
-      </form>
-      <ul>
-        <li v-for="module in modules" :key="module.id" class="flex justify-between items-center border-b py-2">
-          <span>{{ module.title }} - {{ module.course.title }}</span>
-          <div>
-            <button @click="editModule(module)" class="text-blue-500">Edit</button>
-            <button @click="deleteModule(module.id)" class="text-red-500 ml-2">Delete</button>
+  <Navbar />
+  <div class="flex min-h-screen bg-gray-50">
+    <Sidebar />
+    <div class="flex-1 p-6">
+      <div class="p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">
+          Modules for {{ courseTitle }}
+        </h2>
+
+        <button 
+          @click="toggleCreateForm" 
+          class="bg-blue-500 text-white rounded-lg p-3 mb-4 hover:bg-blue-600 transition duration-200"
+        >
+          {{ showCreateForm ? 'Cancel' : 'Create Module' }}
+        </button>
+
+        <form 
+          v-if="showCreateForm" 
+          @submit.prevent="isEditing ? updateModuleHandler() : createModuleHandler()" 
+          class="mb-6 space-y-4"
+        >
+          <select 
+            v-model="newModule.courseId" 
+            class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            required
+          >
+            <option value="">Select Course</option>
+            <option v-for="course in courses" :key="course.id" :value="course.id">
+              {{ course.title }}
+            </option>
+          </select>
+          <input
+            v-model="newModule.title"
+            type="text"
+            placeholder="Module Title"
+            class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <textarea
+            v-model="newModule.description"
+            placeholder="Module Description"
+            class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          ></textarea>
+          <button 
+            type="submit" 
+            class="bg-blue-500 text-white rounded-lg p-3 w-full hover:bg-blue-600 transition duration-200"
+          >
+            {{ isEditing ? 'Update Module' : 'Add Module' }}
+          </button>
+        </form>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div 
+            v-for="module in modules" 
+            :key="module.id" 
+            class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between"
+          >
+            <div>
+              <h3 class="font-semibold text-lg text-gray-800">{{ module.title }}</h3>
+              <p class="text-gray-600">{{ module.description }}</p>
+            </div>
+            <div class="mt-4 flex space-x-2">
+              <button 
+                @click="startEditModule(module)" 
+                class="border border-blue-500 text-blue-500 rounded-lg px-4 py-2 hover:bg-blue-500 hover:text-white transition duration-200"
+              >
+                Edit
+              </button>
+              <button 
+                @click="deleteModuleHandler(module.id)" 
+                class="border border-red-500 text-red-500 rounded-lg px-4 py-2 hover:bg-red-500 hover:text-white transition duration-200"
+              >
+                Delete
+              </button>
+              <button 
+                @click="viewModule(module.id)" 
+                class="border border-green-500 text-green-500 rounded-lg px-4 py-2 hover:bg-green-500 hover:text-white transition duration-200"
+              >
+                View
+              </button>
+            </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import axiosInstance from '@/axiosconfig/axiosInstance';
-  
-  export default {
-    props: {
-      courseId: {
-        type: Number,
-        required: true,
-      },
-    },
-    data() {
-      return {
-        modules: [],
-        newModule: {
-          courseId: this.courseId,
-          title: '',
-          description: '',
-        },
-      };
-    },
-    created() {
-      this.fetchModules();
-    },
-    methods: {
-      async fetchModules() {
-        const response = await axios.get(`api/modules/?courseId=${this.courseId}`);
-        this.modules = response.data;
-      },
-      async createModule() {
-        await axios.post('api/modules/', this.newModule);
-        this.newModule = { courseId: this.courseId, title: '', description: '' };
-        this.fetchModules();
-      },
-      async editModule(module) {
-        const title = prompt("Edit Module Title", module.title);
-        const description = prompt("Edit Module Description", module.description);
-        if (title && description) {
-          await axios.patch(`api/modules/${module.id}/`, { title, description });
-          this.fetchModules();
-        }
-      },
-      async deleteModule(id) {
-        if (confirm("Are you sure you want to delete this module?")) {
-          await axios.delete(`api/modules/${id}/`);
-          this.fetchModules();
-        }
-      },
-    },
-  };
-  </script>
-  
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import useModules from '@/composables/useModules';
+import Navbar from '@/components/Navbar.vue';
+import Sidebar from '@/components/Sidebar.vue';
+
+export default {
+  components: {
+    Navbar,
+    Sidebar,
+  },
+  setup() {
+    const route = useRoute(); // Get route parameters
+    const courseId = ref(route.params.courseId); // Get course ID from parameters
+    const courseTitle = ref(''); // Initialize course title
+    const { courses, modules, createModule, updateModule, deleteModule, fetchModulesByCourse, fetchCourseTitle } = useModules(); // Use your module composable
+    const newModule = ref({ courseId: '', title: '', description: '' });
+    const showCreateForm = ref(false);
+    const isEditing = ref(false);
+
+    const toggleCreateForm = () => {
+      showCreateForm.value = !showCreateForm.value;
+      if (!showCreateForm.value) {
+        newModule.value = { courseId: '', title: '', description: '' };
+        isEditing.value = false;
+      }
+    };
+
+    const startEditModule = (module) => {
+      newModule.value = { ...module };
+      isEditing.value = true;
+      showCreateForm.value = true;
+    };
+
+    const createModuleHandler = () => {
+      newModule.value.courseId = courseId.value; // Ensure courseId is set
+      createModule(newModule.value, courseId.value); // Pass courseId
+      toggleCreateForm(); // Close form after creation
+    };
+
+    const updateModuleHandler = () => {
+      updateModule(newModule.value.id, newModule.value, courseId.value); // Pass courseId
+      toggleCreateForm(); // Close form after update
+    };
+
+    const deleteModuleHandler = (moduleId) => {
+      deleteModule(moduleId, courseId.value); // Pass courseId
+    };
+
+    const viewModule = (moduleId) => {
+      // Implement view logic for module details
+    };
+
+    const fetchCourseDetails = async () => {
+      const title = await fetchCourseTitle(courseId.value); // Fetch course title
+      courseTitle.value = title; // Set course title
+    };
+
+    onMounted(() => {
+      fetchModulesByCourse(courseId.value); // Fetch modules for this specific course
+      fetchCourseDetails(); // Fetch course title
+    });
+
+    return {
+      courseId,
+      courseTitle,
+      newModule,
+      showCreateForm,
+      isEditing,
+      toggleCreateForm,
+      createModule: createModuleHandler,
+      updateModule: updateModuleHandler,
+      deleteModule: deleteModuleHandler,
+      startEditModule,
+      viewModule,
+      courses,
+      modules,
+    };
+  },
+};
+</script>
+
+

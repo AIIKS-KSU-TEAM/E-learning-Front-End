@@ -1,108 +1,101 @@
 <template>
-    <div class="p-4">
-      <h2 class="text-2xl font-bold mb-4">Subjects</h2>
-  
-      <!-- Button to toggle the form for creating a new subject -->
-      <button @click="toggleForm" class="bg-blue-500 text-white rounded p-2 mb-4">
-        {{ isEditing ? 'Cancel Edit' : 'Create New Subject' }}
-      </button>
-  
-      <!-- Form to create/edit a subject -->
-      <form v-if="isFormVisible" @submit.prevent="isEditing ? updateSubject() : createSubject()" class="mb-4">
-        <div class="mb-2">
-          <label for="name" class="block text-sm font-medium text-gray-700">Subject Name</label>
+  <Navbar />
+  <div class="flex min-h-screen bg-gray-100">
+    <Sidebar />
+    <div class="flex-1 p-6">
+      <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Subjects</h2>
+
+        <button
+          @click="toggleForm"
+          class="bg-blue-500 text-white rounded-lg p-3 mb-4 hover:bg-blue-600 transition duration-200"
+        >
+          {{ isEditing ? 'Cancel Edit' : 'Create New Subject' }}
+        </button>
+
+        <form
+          v-if="isFormVisible"
+          @submit.prevent="isEditing ? updateSubject(selectedSubjectId) : createSubject()"
+          class="mb-6 space-y-4"
+        >
           <input
-            v-model="newSubject.name"
             type="text"
-            id="name"
-            placeholder="Enter Subject Name"
-            class="border rounded p-2 w-full"
+            v-model="newSubject.name"
+            placeholder="Subject Name"
+            class="border p-2 rounded w-full"
             required
           />
-        </div>
-        <div class="mb-2">
-          <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
           <textarea
             v-model="newSubject.description"
-            id="description"
-            placeholder="Enter Subject Description"
-            class="border rounded p-2 w-full"
+            placeholder="Subject Description"
+            class="border p-2 rounded w-full"
             required
           ></textarea>
+          <button
+            type="submit"
+            class="bg-blue-500 text-white rounded-lg p-3 hover:bg-blue-600 transition duration-200"
+          >
+            {{ isEditing ? 'Update Subject' : 'Create Subject' }}
+          </button>
+        </form>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            v-for="subject in subjects"
+            :key="subject.id"
+            class="flex flex-col p-4 border border-gray-300 rounded-lg bg-white shadow-sm"
+          >
+            <div>
+              <h3 class="font-semibold text-gray-800">{{ subject.name }}</h3>
+              <p class="text-gray-600">{{ subject.description }}</p>
+            </div>
+            <div class="mt-auto">
+              <button @click="handleEditSubject(subject)" class="text-blue-500 border rounded-lg px-4 py-2 hover:bg-blue-500 hover:text-white">
+                Edit
+              </button>
+              <button @click="deleteSubject(subject.id)" class="text-red-500 border rounded-lg px-4 py-2 hover:bg-red-500 hover:text-white ml-2">
+                Delete
+              </button>
+              <button @click="viewCourses(subject.id, subject.name)" class="text-green-500 border rounded-lg px-4 py-2 hover:bg-green-500 hover:text-white ml-2">
+                View 
+              </button>
+            </div>
+          </div>
         </div>
-        <button type="submit" class="bg-green-500 text-white rounded p-2">
-          {{ isEditing ? 'Update Subject' : 'Add Subject' }}
-        </button>
-      </form>
-  
-      <!-- List of subjects -->
-      <ul>
-        <li
-          v-for="subject in subjects"
-          :key="subject.id"
-          class="flex justify-between items-center border-b py-2"
-        >
-          <div>
-            <h3 class="font-semibold">{{ subject.name }}</h3>
-            <p class="text-gray-600">{{ subject.description }}</p>
-          </div>
-          <div>
-            <button @click="editSubject(subject)" class="text-blue-500 outline outline-blue-500 rounded px-2 py-1">
-              Edit
-            </button>
-            <button @click="deleteSubject(subject.id)" class="text-red-500 outline outline-red-500 rounded px-2 py-1 ml-2">
-              Delete
-            </button>
-          </div>
-        </li>
-      </ul>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import useSubjects from '@/composables/useSubjects';
-  import { ref } from 'vue';
-  
-  export default {
-    setup() {
-      const {
-        subjects,
-        newSubject,
-        isEditing,
-        fetchSubjects,
-        createSubject,
-        updateSubject,
-        editSubject,
-        deleteSubject,
-        clearForm,
-      } = useSubjects();
-  
-      // Reactive variable to control the form visibility
-      const isFormVisible = ref(false);
-  
-      // Function to toggle the form visibility
-      const toggleForm = () => {
-        isFormVisible.value = !isFormVisible.value;
-        if (!isFormVisible.value) {
-          clearForm(); // Clear the form when hiding
-        }
-      };
-  
-      return {
-        subjects,
-        newSubject,
-        isEditing,
-        fetchSubjects,
-        createSubject,
-        updateSubject,
-        editSubject,
-        deleteSubject,
-        clearForm,
-        isFormVisible,
-        toggleForm,
-      };
-    },
-  };
-  </script>
-  
-  
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import Navbar from '@/components/Navbar.vue';
+import Sidebar from '@/components/Sidebar.vue';
+import useSubjects from '@/composables/useSubjects';
+
+const router = useRouter();
+const { subjects, newSubject, isEditing, fetchSubjects, createSubject, updateSubject, deleteSubject, clearForm } = useSubjects();
+const isFormVisible = ref(false);
+const selectedSubjectId = ref(null);
+
+const toggleForm = () => {
+  isFormVisible.value = !isFormVisible.value;
+  if (!isFormVisible.value) {
+    clearForm();
+    selectedSubjectId.value = null; // Reset selected subject ID
+    isEditing.value = false; // Reset editing state
+  }
+};
+
+const handleEditSubject = (subject) => {
+  newSubject.value = { ...subject }; // Populate form with subject details
+  selectedSubjectId.value = subject.id; // Store the selected subject ID
+  isEditing.value = true; // Set editing mode
+  isFormVisible.value = true; // Show the form
+};
+
+const viewCourses = (subjectId, subjectName) => {
+  router.push({ name: 'Courses', query: { subjectId, subjectName } });
+};
+</script>

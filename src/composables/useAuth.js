@@ -9,8 +9,8 @@ const useAuth = () => {
   const password = ref("");
   const router = useRouter();
 
-  const accessToken = useLocalStorage("access-token", null)
-  const refreshToken = useLocalStorage("refresh-token", null)
+  const accessToken = useLocalStorage("access-token", null);
+  const refreshToken = useLocalStorage("refresh-token", null);
 
   const login = async () => {
     try {
@@ -19,12 +19,10 @@ const useAuth = () => {
         password: password.value,
       });
 
-      accessToken.value = response.data.access_token
+      accessToken.value = response.data.access_token;
+      refreshToken.value = response.data.refresh_token;
 
-      refreshToken.value = response.data.refresh_token
-
-      router.push("/dashboard");
-cd
+      router.push("/dashboard"); // Correctly navigating to the dashboard
     } catch (error) {
       console.error(error);
       alert("Login failed. Please try again.");
