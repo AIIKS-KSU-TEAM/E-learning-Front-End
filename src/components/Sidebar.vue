@@ -3,41 +3,66 @@ import useLogout from "@/composables/useLogout";
 
 const { logout } = useLogout();
 </script>
+
 <template>
-  <aside class="w-64 bg-blue-900 p-6 text-white">
+  <aside class="w-64 bg-blue-900 p-6 text-white shadow-lg">
     <router-link to="/dashboard">
-      <h2 class="text-2xl font-semibold">School ERP</h2>
+      <h2 class="text-2xl font-bold mb-6">E-<span>Learning</span></h2>
     </router-link>
-    <nav class="mt-6">
+    <nav class="mt-4">
       <ul>
         <li>
-          <router-link to="/subjects" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-user-graduate mr-2"></i> Subjects
+          <router-link
+            to="/subjects"
+            class="flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-blue-800"
+          >
+            <i class="fas fa-book-open mr-3"></i>
+            <span>Subjects</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/courses" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-chalkboard-teacher mr-2"></i> Courses
+          <router-link
+            to="/courses"
+            class="flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-blue-800"
+          >
+            <i class="fas fa-user-graduate mr-3"></i>
+            <span>Students</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/modules" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-book mr-2"></i> Modules
+          <router-link
+            to="/modules"
+            class="flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-blue-800"
+          >
+            <i class="fas fa-pencil-alt mr-3"></i>
+            <span>Assessments</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/module-contents" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-school mr-2"></i> Contents
+          <router-link
+            to="/module-contents"
+            class="flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-blue-800"
+          >
+            <i class="fas fa-school mr-3"></i>
+            <span>Classroom</span>
           </router-link>
         </li>
         <li>
-          <router-link to="/course" class="flex items-center py-2 px-4 hover:bg-blue-700">
-            <i class="fas fa-calendar-alt mr-2"></i> Module
+          <router-link
+            to="/course"
+            class="flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-blue-800"
+          >
+            <i class="fas fa-user-circle mr-3"></i>
+            <span>Profile</span>
           </router-link>
         </li>
         <li>
-          <button @click="logout" class="block w-full text-left py-2 px-4 hover:bg-red-600">
-            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+          <button
+            @click="logout"
+            class="flex items-center py-2 px-4 w-full text-left rounded transition-colors duration-200 hover:bg-red-600"
+          >
+            <i class="fas fa-sign-out-alt mr-3"></i>
+            <span>Logout</span>
           </button>
         </li>
       </ul>
@@ -47,6 +72,6 @@ const { logout } = useLogout();
 
 <style scoped>
 aside {
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 </style>

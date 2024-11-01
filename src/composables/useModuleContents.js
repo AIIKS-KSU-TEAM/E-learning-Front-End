@@ -1,48 +1,91 @@
-// src/composables/useModuleContents.js
-
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import axiosInstance from '@/axiosconfig/axiosInstance';
 
 export default function useModuleContents(moduleId) {
   const contents = ref([]);
-  const newContent = ref({ moduleId, content: '' });
-  const modules = ref([]); // You can fetch modules if needed
+  const modules = ref([]);
+  const newContent = ref({
+    moduleId: moduleId.value, // Initialize with the value
+    content: '',
+    contentType: '', // Added contentType to track user selection
+  });
 
-  const fetchContents = async () => {
-    const response = await axiosInstance.get(`api/contents/?moduleId=${moduleId}`);
-    contents.value = response.data;
+  // Fetch modules and contents
+  const fetchModules = async () => {
+    try {
+      const response = await axiosInstance.get('/api/modules/');
+      modules.value = response.data;
+    } catch (error) {
+      console.error('Failed to fetch modules:', error);
+    }
   };
 
-  const createContent = async () => {
-    await axiosInstance.post('api/contents/', newContent.value);
-    newContent.value.content = ''; 
-    await fetchContents();
+  const fetchContents = async () => {
+    try {
+      console.log('Fetching contents for moduleId:', moduleId.value);
+      const response = await axiosInstance.get(`/api/modules/${moduleId.value}/contents/`);
+      contents.value = response.data;
+    } catch (error) {
+      console.error('Failed to fetch contents:', error);
+    }
+  };
+
+  const createContent = async (contentType, content) => {
+    try {
+      const response = await axiosInstance.post(
+        `/api/modules/${newContent.value.moduleId}/contents/`,
+        {
+          content_type: contentType, // Use the dynamic contentType from form
+          content: content, // Use the dynamic content from form
+        }
+      );
+      contents.value.push(response.data);
+      resetNewContent(); // Reset fields after submission
+    } catch (error) {
+      console.error('Failed to create content:', error);
+    }
+  };
+
+  const resetNewContent = () => {
+    newContent.value = {
+      moduleId: moduleId.value,
+      content: '',
+      contentType: '',
+    };
   };
 
   const editContent = async (content) => {
-    const newContentValue = prompt("Edit Content", content.content);
-    if (newContentValue) {
-      await axiosInstance.patch(`api/contents/${content.id}/`, { content: newContentValue });
-      await fetchContents();
+    // Implement edit logic here
+    console.log('Edit content:', content);
+  };
+
+  const deleteContent = async (contentId) => {
+    try {
+      await axiosInstance.delete(`/api/contents/${contentId}/`);
+      contents.value = contents.value.filter(c => c.id !== contentId);
+    } catch (error) {
+      console.error('Failed to delete content:', error);
     }
   };
 
-  const deleteContent = async (id) => {
-    if (confirm("Are you sure you want to delete this content?")) {
-      await axiosInstance.delete(`api/contents/${id}/`);
-      await fetchContents();
-    }
+  const viewContent = (content) => {
+    console.log('View content:', content);
   };
 
-  onMounted(fetchContents);
+  // Fetch modules initially
+  fetchModules();
+
+  // Watch for changes in moduleId
+  watch(moduleId, fetchContents);
 
   return {
     contents,
-    newContent,
     modules,
-    fetchContents,
+    newContent,
     createContent,
     editContent,
     deleteContent,
+    viewContent,
+    fetchContents,
   };
 }

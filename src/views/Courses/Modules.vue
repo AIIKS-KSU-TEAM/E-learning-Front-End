@@ -5,14 +5,15 @@
     <div class="flex-1 p-6">
       <div class="p-6 bg-white rounded-lg shadow-md">
         <h2 class="text-3xl font-bold mb-6 text-gray-800">
-          Modules for {{ courseTitle }}
+          Course Modules 
         </h2>
 
         <button 
           @click="toggleCreateForm" 
-          class="bg-blue-500 text-white rounded-lg p-3 mb-4 hover:bg-blue-600 transition duration-200"
+          class="bg-blue-500 text-white rounded-lg p-3 mb-4 hover:bg-blue-600 transition duration-200 flex items-center"
         >
-          {{ showCreateForm ? 'Cancel' : 'Create Module' }}
+          <span v-if="showCreateForm">❌</span>
+          <span v-else class="hidden md:inline">Create Module</span>
         </button>
 
         <form 
@@ -64,21 +65,24 @@
             <div class="mt-4 flex space-x-2">
               <button 
                 @click="startEditModule(module)" 
-                class="border border-blue-500 text-blue-500 rounded-lg px-4 py-2 hover:bg-blue-500 hover:text-white transition duration-200"
+                class="border border-blue-500 text-blue-500 rounded-lg px-4 py-2 hover:bg-blue-500 hover:text-white transition duration-200 flex items-center"
               >
-                Edit
+                <span class="hidden md:inline">Edit</span>
+                <span class="inline md:hidden">🖉</span>
               </button>
               <button 
                 @click="deleteModuleHandler(module.id)" 
-                class="border border-red-500 text-red-500 rounded-lg px-4 py-2 hover:bg-red-500 hover:text-white transition duration-200"
+                class="border border-red-500 text-red-500 rounded-lg px-4 py-2 hover:bg-red-500 hover:text-white transition duration-200 flex items-center"
               >
-                Delete
+                <span class="hidden md:inline">Delete</span>
+                <span class="inline md:hidden">🗑️</span>
               </button>
               <button 
                 @click="viewModule(module.id)" 
-                class="border border-green-500 text-green-500 rounded-lg px-4 py-2 hover:bg-green-500 hover:text-white transition duration-200"
+                class="border border-green-500 text-green-500 rounded-lg px-4 py-2 hover:bg-green-500 hover:text-white transition duration-200 flex items-center"
               >
-                View
+                <span class="hidden md:inline">View</span>
+                <span class="inline md:hidden">👁️</span>
               </button>
             </div>
           </div>
@@ -88,87 +92,63 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import useModules from '@/composables/useModules';
 import Navbar from '@/components/Navbar.vue';
 import Sidebar from '@/components/Sidebar.vue';
 
-export default {
-  components: {
-    Navbar,
-    Sidebar,
-  },
-  setup() {
-    const route = useRoute(); // Get route parameters
-    const courseId = ref(route.params.courseId); // Get course ID from parameters
-    const courseTitle = ref(''); // Initialize course title
-    const { courses, modules, createModule, updateModule, deleteModule, fetchModulesByCourse, fetchCourseTitle } = useModules(); // Use your module composable
-    const newModule = ref({ courseId: '', title: '', description: '' });
-    const showCreateForm = ref(false);
-    const isEditing = ref(false);
+const route = useRoute();
+const router = useRouter();
+const courseId = ref(route.params.courseId);
+const newModule = ref({ courseId: '', title: '', description: '' });
+const showCreateForm = ref(false);
+const isEditing = ref(false);
 
-    const toggleCreateForm = () => {
-      showCreateForm.value = !showCreateForm.value;
-      if (!showCreateForm.value) {
-        newModule.value = { courseId: '', title: '', description: '' };
-        isEditing.value = false;
-      }
-    };
+const { courses, modules, createModule, updateModule, deleteModule, fetchModulesByCourse } = useModules();
 
-    const startEditModule = (module) => {
-      newModule.value = { ...module };
-      isEditing.value = true;
-      showCreateForm.value = true;
-    };
-
-    const createModuleHandler = () => {
-      newModule.value.courseId = courseId.value; // Ensure courseId is set
-      createModule(newModule.value, courseId.value); // Pass courseId
-      toggleCreateForm(); // Close form after creation
-    };
-
-    const updateModuleHandler = () => {
-      updateModule(newModule.value.id, newModule.value, courseId.value); // Pass courseId
-      toggleCreateForm(); // Close form after update
-    };
-
-    const deleteModuleHandler = (moduleId) => {
-      deleteModule(moduleId, courseId.value); // Pass courseId
-    };
-
-    const viewModule = (moduleId) => {
-      // Implement view logic for module details
-    };
-
-    const fetchCourseDetails = async () => {
-      const title = await fetchCourseTitle(courseId.value); // Fetch course title
-      courseTitle.value = title; // Set course title
-    };
-
-    onMounted(() => {
-      fetchModulesByCourse(courseId.value); // Fetch modules for this specific course
-      fetchCourseDetails(); // Fetch course title
-    });
-
-    return {
-      courseId,
-      courseTitle,
-      newModule,
-      showCreateForm,
-      isEditing,
-      toggleCreateForm,
-      createModule: createModuleHandler,
-      updateModule: updateModuleHandler,
-      deleteModule: deleteModuleHandler,
-      startEditModule,
-      viewModule,
-      courses,
-      modules,
-    };
-  },
+const toggleCreateForm = () => {
+  showCreateForm.value = !showCreateForm.value;
+  if (!showCreateForm.value) {
+    newModule.value = { courseId: '', title: '', description: '' };
+    isEditing.value = false;
+  }
 };
+
+const startEditModule = (module) => {
+  newModule.value = { ...module };
+  isEditing.value = true;
+  showCreateForm.value = true;
+};
+
+const createModuleHandler = () => {
+  newModule.value.courseId = courseId.value;
+  createModule(newModule.value, courseId.value);
+  toggleCreateForm();
+};
+
+const updateModuleHandler = () => {
+  updateModule(newModule.value.id, newModule.value, courseId.value);
+  toggleCreateForm();
+};
+
+const deleteModuleHandler = (moduleId) => {
+  deleteModule(moduleId, courseId.value);
+};
+
+const viewModule = (moduleId) => {
+  console.log('Navigating to module with ID:', moduleId); 
+  router.push({ name: 'ModuleContents', params: { moduleId } });
+};
+
+const fetchCourseDetails = async () => {
+  const title = await fetchCourseTitle(courseId.value);
+  courseTitle.value = title; // Note: Make sure you have defined courseTitle
+};
+
+onMounted(() => {
+  fetchModulesByCourse(courseId.value);
+  fetchCourseDetails();
+});
 </script>
-
-

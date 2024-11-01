@@ -51,7 +51,7 @@ const router = createRouter({
       props: true, 
     },
     {
-      path: '/module-contents',
+      path: '/modules/:moduleId',
       name: 'ModuleContents',
       component: ModuleContents,
     },

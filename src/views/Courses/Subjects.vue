@@ -3,7 +3,7 @@
   <div class="flex min-h-screen bg-gray-100">
     <Sidebar />
     <div class="flex-1 p-6">
-      <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Subjects</h2>
 
         <button
