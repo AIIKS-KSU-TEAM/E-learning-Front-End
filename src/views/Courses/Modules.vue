@@ -4,8 +4,8 @@
     <Sidebar />
     <div class="flex-1 p-6">
       <div class="p-6 bg-white rounded-lg shadow-md">
-        <h2 class="text-3xl font-bold mb-6 text-gray-800">
-          Course Modules 
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">
+        {{ courseTitle }} / Modules
         </h2>
 
         <button 
@@ -98,6 +98,7 @@ import { useRouter, useRoute } from 'vue-router';
 import useModules from '@/composables/useModules';
 import Navbar from '@/components/Navbar.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import axiosInstance from '@/axiosconfig/axiosInstance'; // Make sure to import axios for fetching course details
 
 const route = useRoute();
 const router = useRouter();
@@ -105,6 +106,8 @@ const courseId = ref(route.params.courseId);
 const newModule = ref({ courseId: '', title: '', description: '' });
 const showCreateForm = ref(false);
 const isEditing = ref(false);
+const courseTitle = ref('');
+
 
 const { courses, modules, createModule, updateModule, deleteModule, fetchModulesByCourse } = useModules();
 
@@ -142,9 +145,19 @@ const viewModule = (moduleId) => {
   router.push({ name: 'ModuleContents', params: { moduleId } });
 };
 
+// Fetch course title based on courseId
+const fetchCourseTitle = async (courseId) => {
+  try {
+    const response = await axiosInstance.get(`api/courses/${courseId}/`);
+    return response.data.title; // Assuming the course title is in the response
+  } catch (error) {
+    console.error('Failed to fetch course title:', error);
+    return '';
+  }
+};
+
 const fetchCourseDetails = async () => {
-  const title = await fetchCourseTitle(courseId.value);
-  courseTitle.value = title; // Note: Make sure you have defined courseTitle
+  courseTitle.value = await fetchCourseTitle(courseId.value);
 };
 
 onMounted(() => {

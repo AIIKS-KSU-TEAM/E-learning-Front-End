@@ -4,7 +4,7 @@
     <Sidebar />
     <div class="flex-1 p-6">
       <div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <h2 class="text-2xl font-bold mb-4">Courses for {{ subjectName }}</h2>
+        <h2 class="text-2xl font-bold mb-4">{{ subjectName }} / Courses</h2>
 
         <button 
           @click="toggleForm" 
@@ -124,7 +124,7 @@ const submitCourse = async () => {
 };
 
 const viewModules = (courseId) => {
-  router.push({ name: 'Modules', params: { courseId } });
+  router.push({ name: 'Modules', params: { courseId, subjectId, subjectName } });
 };
 
 onMounted(() => {

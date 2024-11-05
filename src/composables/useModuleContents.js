@@ -3,26 +3,18 @@ import axiosInstance from '@/axiosconfig/axiosInstance';
 
 export default function useModuleContents(moduleId) {
   const contents = ref([]);
-  const modules = ref([]);
   const newContent = ref({
-    moduleId: moduleId.value, // Initialize with the value
+    moduleId: moduleId.value,
     content: '',
-    contentType: '', // Added contentType to track user selection
+    contentType: '',
   });
-
-  // Fetch modules and contents
-  const fetchModules = async () => {
-    try {
-      const response = await axiosInstance.get('/api/modules/');
-      modules.value = response.data;
-    } catch (error) {
-      console.error('Failed to fetch modules:', error);
-    }
-  };
+  const newAssignment = ref({
+    title: '',
+    file: null,
+  });
 
   const fetchContents = async () => {
     try {
-      console.log('Fetching contents for moduleId:', moduleId.value);
       const response = await axiosInstance.get(`/api/modules/${moduleId.value}/contents/`);
       contents.value = response.data;
     } catch (error) {
@@ -34,28 +26,45 @@ export default function useModuleContents(moduleId) {
     try {
       const response = await axiosInstance.post(
         `/api/modules/${newContent.value.moduleId}/contents/`,
-        {
-          content_type: contentType, // Use the dynamic contentType from form
-          content: content, // Use the dynamic content from form
-        }
+        { content_type: contentType, content }
       );
       contents.value.push(response.data);
-      resetNewContent(); // Reset fields after submission
+      resetNewContent();
     } catch (error) {
       console.error('Failed to create content:', error);
     }
   };
 
+  const createAssignment = async (title, file) => {
+    try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('file', file);
+      formData.append('module', newContent.value.moduleId);
+
+      const response = await axiosInstance.post('/api/assignments/', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      contents.value.push(response.data);
+      resetNewAssignment();
+    } catch (error) {
+      console.error('Failed to create assignment:', error);
+    }
+  };
+
+  const handleFileUpload = (event) => {
+    newAssignment.value.file = event.target.files[0];
+  };
+
   const resetNewContent = () => {
-    newContent.value = {
-      moduleId: moduleId.value,
-      content: '',
-      contentType: '',
-    };
+    newContent.value = { moduleId: moduleId.value, content: '', contentType: '' };
+  };
+
+  const resetNewAssignment = () => {
+    newAssignment.value = { title: '', file: null };
   };
 
   const editContent = async (content) => {
-    // Implement edit logic here
     console.log('Edit content:', content);
   };
 
@@ -72,20 +81,18 @@ export default function useModuleContents(moduleId) {
     console.log('View content:', content);
   };
 
-  // Fetch modules initially
-  fetchModules();
-
-  // Watch for changes in moduleId
   watch(moduleId, fetchContents);
 
   return {
     contents,
-    modules,
     newContent,
+    newAssignment,
     createContent,
+    createAssignment,
     editContent,
     deleteContent,
     viewContent,
     fetchContents,
+    handleFileUpload,
   };
 }
