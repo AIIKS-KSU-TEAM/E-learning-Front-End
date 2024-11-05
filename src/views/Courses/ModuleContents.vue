@@ -10,11 +10,16 @@
           @click="showForm = !showForm"
           class="bg-blue-500 text-white rounded-lg p-3 mb-4 hover:bg-blue-600 transition duration-200"
         >
-          {{ showForm ? 'Cancel' : 'Add Content' }}
+          {{ showForm ? "Cancel" : "Add Content" }}
         </button>
 
         <div v-if="showForm">
-          <form @submit.prevent="createContent(newContent.contentType, newContent.content)" class="mb-6 space-y-4">
+          <form
+            @submit.prevent="
+              createContent(newContent.contentType, newContent.content)
+            "
+            class="mb-6 space-y-4"
+          >
             <select
               v-model="newContent.contentType"
               class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -49,10 +54,12 @@
           >
             <div class="mb-4">
               <span class="text-gray-800">
-                <strong>{{ content.content_type | capitalize }}:</strong> {{ content.content }}
+                <strong>{{ content.content_type | capitalize }}:</strong>
+                {{ content.content }}
               </span>
             </div>
-            <div class="flex space-x-2 mt-4"> <!-- Reduced spacing between buttons -->
+            <div class="flex space-x-2 mt-4">
+              <!-- Reduced spacing between buttons -->
               <button
                 @click="editContent(content)"
                 class="border border-blue-500 text-blue-500 rounded-lg px-3 py-1 hover:bg-blue-500 hover:text-white transition duration-200"
@@ -80,11 +87,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import Navbar from '@/components/Navbar.vue';
-import Sidebar from '@/components/Sidebar.vue';
-import useModuleContents from '@/composables/useModuleContents';
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import Navbar from "@/components/Navbar.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import useModuleContents from "@/composables/useModuleContents";
 
 const route = useRoute();
 const moduleId = ref(route.params.moduleId);

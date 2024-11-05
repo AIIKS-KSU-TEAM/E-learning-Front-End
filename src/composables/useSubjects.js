@@ -1,9 +1,9 @@
-import { ref, onMounted } from 'vue';
-import axiosInstance from '@/axiosconfig/axiosInstance';
+import { ref, onMounted } from "vue";
+import axiosInstance from "@/axiosconfig/axiosInstance";
 
 export default function useSubjects() {
   const subjects = ref([]);
-  const newSubject = ref({ name: '', description: '' });
+  const newSubject = ref({ name: "", description: "" });
   const isEditing = ref(false);
   const loading = ref(false);
   const error = ref(null);
@@ -14,11 +14,11 @@ export default function useSubjects() {
     loading.value = true;
     error.value = null;
     try {
-      const response = await axiosInstance.get('api/subjects/');
+      const response = await axiosInstance.get("api/subjects/");
       subjects.value = response.data;
     } catch (err) {
-      console.error('Error fetching subjects:', err);
-      error.value = 'Failed to fetch subjects.';
+      console.error("Error fetching subjects:", err);
+      error.value = "Failed to fetch subjects.";
     } finally {
       loading.value = false;
     }
@@ -29,12 +29,15 @@ export default function useSubjects() {
     loading.value = true;
     error.value = null;
     try {
-      const response = await axiosInstance.post('api/subjects/', newSubject.value);
+      const response = await axiosInstance.post(
+        "api/subjects/",
+        newSubject.value,
+      );
       subjects.value.push(response.data); // Add new subject to subjects list
       clearForm(); // Reset form
     } catch (err) {
-      console.error('Error creating subject:', err);
-      error.value = 'Failed to create a new subject.';
+      console.error("Error creating subject:", err);
+      error.value = "Failed to create a new subject.";
     } finally {
       loading.value = false;
     }
@@ -45,16 +48,21 @@ export default function useSubjects() {
     loading.value = true;
     error.value = null;
     try {
-      const response = await axiosInstance.put(`api/subjects/${subjectId}/`, newSubject.value);
-      const index = subjects.value.findIndex((subject) => subject.id === subjectId);
+      const response = await axiosInstance.put(
+        `api/subjects/${subjectId}/`,
+        newSubject.value,
+      );
+      const index = subjects.value.findIndex(
+        (subject) => subject.id === subjectId,
+      );
       if (index !== -1) {
         subjects.value[index] = response.data; // Update the subject in the list
       }
       clearForm(); // Reset form
       isEditing.value = false;
     } catch (err) {
-      console.error('Error updating subject:', err);
-      error.value = 'Failed to update the subject.';
+      console.error("Error updating subject:", err);
+      error.value = "Failed to update the subject.";
     } finally {
       loading.value = false;
     }
@@ -66,10 +74,12 @@ export default function useSubjects() {
     error.value = null;
     try {
       await axiosInstance.delete(`api/subjects/${subjectId}/`);
-      subjects.value = subjects.value.filter((subject) => subject.id !== subjectId); // Remove deleted subject from list
+      subjects.value = subjects.value.filter(
+        (subject) => subject.id !== subjectId,
+      ); // Remove deleted subject from list
     } catch (err) {
-      console.error('Error deleting subject:', err);
-      error.value = 'Failed to delete the subject.';
+      console.error("Error deleting subject:", err);
+      error.value = "Failed to delete the subject.";
     } finally {
       loading.value = false;
     }
@@ -77,7 +87,7 @@ export default function useSubjects() {
 
   // Clear form
   const clearForm = () => {
-    newSubject.value = { name: '', description: '' };
+    newSubject.value = { name: "", description: "" };
     editingSubjectId.value = null; // Reset the editing subject ID
     isEditing.value = false; // Reset editing state
   };

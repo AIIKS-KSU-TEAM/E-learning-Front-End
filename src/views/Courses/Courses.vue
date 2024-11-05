@@ -6,21 +6,25 @@
       <div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold mb-4">Courses for {{ subjectName }}</h2>
 
-        <button 
-          @click="toggleForm" 
+        <button
+          @click="toggleForm"
           class="mb-4 bg-blue-500 text-white rounded p-2 transition duration-200 hover:bg-blue-600"
         >
-          {{ showForm ? 'Cancel' : 'Create Course' }}
+          {{ showForm ? "Cancel" : "Create Course" }}
         </button>
 
-        <form 
-          v-if="showForm" 
-          @submit.prevent="submitCourse" 
+        <form
+          v-if="showForm"
+          @submit.prevent="submitCourse"
           class="bg-white shadow-md rounded p-4 mb-4"
         >
-          <h3 class="text-xl font-semibold mb-4">{{ editingCourse ? 'Edit Course' : 'Add Course' }}</h3>
+          <h3 class="text-xl font-semibold mb-4">
+            {{ editingCourse ? "Edit Course" : "Add Course" }}
+          </h3>
           <div class="mb-2">
-            <label class="block text-sm font-medium text-gray-700" for="title">Course Title</label>
+            <label class="block text-sm font-medium text-gray-700" for="title"
+              >Course Title</label
+            >
             <input
               v-model="newCourse.title"
               type="text"
@@ -30,7 +34,11 @@
             />
           </div>
           <div class="mb-2">
-            <label class="block text-sm font-medium text-gray-700" for="description">Course Description</label>
+            <label
+              class="block text-sm font-medium text-gray-700"
+              for="description"
+              >Course Description</label
+            >
             <textarea
               v-model="newCourse.description"
               placeholder="Course Description"
@@ -38,18 +46,18 @@
               required
             ></textarea>
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             class="bg-green-500 text-white rounded p-2 w-full transition duration-200 hover:bg-green-600"
           >
-            {{ editingCourse ? 'Update Course' : 'Add Course' }}
+            {{ editingCourse ? "Update Course" : "Add Course" }}
           </button>
         </form>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div 
-            v-for="course in courses" 
-            :key="course.id" 
+          <div
+            v-for="course in courses"
+            :key="course.id"
             class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between"
           >
             <div>
@@ -57,20 +65,20 @@
               <p class="text-gray-700">{{ course.description }}</p>
             </div>
             <div class="mt-4 flex space-x-2">
-              <button 
-                @click="populateCourse(course)" 
+              <button
+                @click="populateCourse(course)"
                 class="text-blue-500 outline outline-blue-500 rounded px-2 py-1 transition duration-200 hover:bg-blue-500 hover:text-white"
               >
                 Edit
               </button>
-              <button 
-                @click="deleteCourse(course.id)" 
+              <button
+                @click="deleteCourse(course.id)"
                 class="text-red-500 outline outline-red-500 rounded px-2 py-1 transition duration-200 hover:bg-red-500 hover:text-white"
               >
                 Delete
               </button>
-              <button 
-                @click="viewModules(course.id)" 
+              <button
+                @click="viewModules(course.id)"
                 class="text-green-500 outline outline-green-500 rounded px-2 py-1 transition duration-200 hover:bg-green-500 hover:text-white"
               >
                 View Modules
@@ -84,18 +92,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import Navbar from '@/components/Navbar.vue';
-import Sidebar from '@/components/Sidebar.vue';
-import { useRoute, useRouter } from 'vue-router';
-import useCourses from '@/composables/useCourses';
+import { ref, onMounted } from "vue";
+import Navbar from "@/components/Navbar.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import { useRoute, useRouter } from "vue-router";
+import useCourses from "@/composables/useCourses";
 
 const route = useRoute();
 const router = useRouter();
 const subjectId = ref(route.query.subjectId);
 const subjectName = ref(route.query.subjectName);
 
-const { courses, newCourse, createCourse, editCourse, deleteCourse, clearNewCourse, fetchCoursesBySubject } = useCourses();
+const {
+  courses,
+  newCourse,
+  createCourse,
+  editCourse,
+  deleteCourse,
+  clearNewCourse,
+  fetchCoursesBySubject,
+} = useCourses();
 const showForm = ref(false);
 const editingCourse = ref(null);
 
@@ -124,10 +140,10 @@ const submitCourse = async () => {
 };
 
 const viewModules = (courseId) => {
-  router.push({ name: 'Modules', params: { courseId } });
+  router.push({ name: "Modules", params: { courseId } });
 };
 
 onMounted(() => {
-  fetchCoursesBySubject(subjectId.value); 
+  fetchCoursesBySubject(subjectId.value);
 });
 </script>
