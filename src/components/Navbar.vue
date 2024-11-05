@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const isNavbarCollapsed = ref(true);
 const isSubMenuCollapsed = ref(true);
@@ -15,7 +15,6 @@ const isSubMenuCollapsed = ref(true);
       </div>
 
       <div class="flex">
-
         <a href="/contact" class="text-black">
           <button
             class="bg-transparent text-black border border-black py-1 px-4 rounded hover:bg-white hover:text-blue-600 transition duration-300 flex items-center"
@@ -35,7 +34,9 @@ const isSubMenuCollapsed = ref(true);
           <div class="text-2xl font-bold text-white">
             <span class="text-blue-500">Kisii University</span>
           </div>
-          <div class="h-14 w-1 bg-gradient-to-b from-white to-blue-500 mx-2"></div>
+          <div
+            class="h-14 w-1 bg-gradient-to-b from-white to-blue-500 mx-2"
+          ></div>
           <div class="text-left text-gray-200">
             <div class="text-sm">University of The</div>
             <div class="text-sm">21st Centuary</div>
@@ -57,17 +58,26 @@ const isSubMenuCollapsed = ref(true);
         <div class="flex justify-center flex-grow">
           <ul class="flex space-x-4">
             <li>
-              <a class="text-gray-200 hover:text-white flex items-center" href="/home">
+              <a
+                class="text-gray-200 hover:text-white flex items-center"
+                href="/home"
+              >
                 <i class="fas fa-home mr-1"></i> Home
               </a>
             </li>
             <li>
-              <a class="text-gray-200 hover:text-white flex items-center" href="/about">
+              <a
+                class="text-gray-200 hover:text-white flex items-center"
+                href="/about"
+              >
                 <i class="fas fa-info-circle mr-1"></i> About Us
               </a>
             </li>
             <li>
-              <a class="text-gray-200 hover:text-white flex items-center" href="/course">
+              <a
+                class="text-gray-200 hover:text-white flex items-center"
+                href="/course"
+              >
                 <i class="fas fa-book-open mr-1"></i> Our Courses
               </a>
             </li>

@@ -1,26 +1,7 @@
 <script setup>
-import { ref } from "vue";
-import axios from "axios";
+import useAuth from "@/composables/useAuth";
 
-const username = ref("");
-const email = ref("");
-const password = ref("");
-
-const signup = async () => {
-  try {
-    const response = await axios.post("http://127.0.0.1:8000/api/register/", {
-      username: username.value,
-      email: email.value,
-      password: password.value,
-    });
-    alert("Signup successful");
-
-    window.location.href = "/login";
-  } catch (error) {
-    console.error(error);
-    alert("Signup failed. Please try again.");
-  }
-};
+const { name, email, password, signup } = useAuth();
 </script>
 
 <template>
@@ -39,9 +20,9 @@ const signup = async () => {
 
         <div class="mb-4">
           <input
-            v-model="username"
+            v-model="name"
             type="text"
-            placeholder="Username"
+            placeholder="Name"
             class="input-field"
             required
           />

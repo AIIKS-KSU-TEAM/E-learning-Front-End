@@ -35,24 +35,24 @@ const router = createRouter({
       component: Dashboard,
     },
     {
-      path: '/subjects',
-      name: 'Subjects',
+      path: "/subjects",
+      name: "Subjects",
       component: Subjects,
     },
     {
-      path: '/courses',
-      name: 'Courses',
+      path: "/courses",
+      name: "Courses",
       component: Courses,
     },
     {
-      path: '/modules/:courseId',
-      name: 'Modules',
+      path: "/modules/:courseId",
+      name: "Modules",
       component: Modules,
-      props: true, 
+      props: true,
     },
     {
-      path: '/modules/:moduleId',
-      name: 'ModuleContents',
+      path: "/modules/:moduleId",
+      name: "ModuleContents",
       component: ModuleContents,
     },
     {

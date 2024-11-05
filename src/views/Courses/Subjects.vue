@@ -10,12 +10,14 @@
           @click="toggleForm"
           class="bg-blue-500 text-white rounded-lg p-3 mb-4 hover:bg-blue-600 transition duration-200"
         >
-          {{ isEditing ? 'Cancel Edit' : 'Create New Subject' }}
+          {{ isEditing ? "Cancel Edit" : "Create New Subject" }}
         </button>
 
         <form
           v-if="isFormVisible"
-          @submit.prevent="isEditing ? updateSubject(selectedSubjectId) : createSubject()"
+          @submit.prevent="
+            isEditing ? updateSubject(selectedSubjectId) : createSubject()
+          "
           class="mb-6 space-y-4"
         >
           <input
@@ -35,7 +37,7 @@
             type="submit"
             class="bg-blue-500 text-white rounded-lg p-3 hover:bg-blue-600 transition duration-200"
           >
-            {{ isEditing ? 'Update Subject' : 'Create Subject' }}
+            {{ isEditing ? "Update Subject" : "Create Subject" }}
           </button>
         </form>
 
@@ -50,14 +52,23 @@
               <p class="text-gray-600">{{ subject.description }}</p>
             </div>
             <div class="mt-auto">
-              <button @click="handleEditSubject(subject)" class="text-blue-500 border rounded-lg px-4 py-2 hover:bg-blue-500 hover:text-white">
+              <button
+                @click="handleEditSubject(subject)"
+                class="text-blue-500 border rounded-lg px-4 py-2 hover:bg-blue-500 hover:text-white"
+              >
                 Edit
               </button>
-              <button @click="deleteSubject(subject.id)" class="text-red-500 border rounded-lg px-4 py-2 hover:bg-red-500 hover:text-white ml-2">
+              <button
+                @click="deleteSubject(subject.id)"
+                class="text-red-500 border rounded-lg px-4 py-2 hover:bg-red-500 hover:text-white ml-2"
+              >
                 Delete
               </button>
-              <button @click="viewCourses(subject.id, subject.name)" class="text-green-500 border rounded-lg px-4 py-2 hover:bg-green-500 hover:text-white ml-2">
-                View 
+              <button
+                @click="viewCourses(subject.id, subject.name)"
+                class="text-green-500 border rounded-lg px-4 py-2 hover:bg-green-500 hover:text-white ml-2"
+              >
+                View
               </button>
             </div>
           </div>
@@ -68,14 +79,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import Navbar from '@/components/Navbar.vue';
-import Sidebar from '@/components/Sidebar.vue';
-import useSubjects from '@/composables/useSubjects';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import Navbar from "@/components/Navbar.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import useSubjects from "@/composables/useSubjects";
 
 const router = useRouter();
-const { subjects, newSubject, isEditing, fetchSubjects, createSubject, updateSubject, deleteSubject, clearForm } = useSubjects();
+const {
+  subjects,
+  newSubject,
+  isEditing,
+  fetchSubjects,
+  createSubject,
+  updateSubject,
+  deleteSubject,
+  clearForm,
+} = useSubjects();
 const isFormVisible = ref(false);
 const selectedSubjectId = ref(null);
 
@@ -96,6 +116,6 @@ const handleEditSubject = (subject) => {
 };
 
 const viewCourses = (subjectId, subjectName) => {
-  router.push({ name: 'Courses', query: { subjectId, subjectName } });
+  router.push({ name: "Courses", query: { subjectId, subjectName } });
 };
 </script>
