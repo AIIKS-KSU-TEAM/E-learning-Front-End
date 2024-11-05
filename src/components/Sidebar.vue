@@ -2,7 +2,6 @@
 import useLogout from "@/composables/useLogout";
 
 const { logout } = useLogout();
-
 </script>
 
 <template>
