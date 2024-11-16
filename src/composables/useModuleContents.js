@@ -13,14 +13,32 @@ export default function useModuleContents(moduleId) {
     file: null,
   });
 
+  // Fetch contents and assignments together
   const fetchContents = async () => {
     try {
       const response = await axiosInstance.get(
-        `/api/modules/${moduleId.value}/contents/`,
+        `/api/modules/${moduleId.value}/contents/`
       );
       contents.value = response.data;
+
+      await fetchAssignments();
     } catch (error) {
       console.error("Failed to fetch contents:", error);
+    }
+  };
+
+  const fetchAssignments = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/modules/${moduleId.value}/assignments/`
+      );
+      const assignments = response.data.map((assignment) => ({
+        ...assignment,
+        isAssignment: true,
+      }));
+      contents.value = [...contents.value, ...assignments];
+    } catch (error) {
+      console.error("Failed to fetch assignments:", error);
     }
   };
 
@@ -28,7 +46,7 @@ export default function useModuleContents(moduleId) {
     try {
       const response = await axiosInstance.post(
         `/api/modules/${newContent.value.moduleId}/contents/`,
-        { content_type: contentType, content },
+        { content_type: contentType, content }
       );
       contents.value.push(response.data);
       resetNewContent();
@@ -37,17 +55,26 @@ export default function useModuleContents(moduleId) {
     }
   };
 
-  const createAssignment = async (title, file) => {
+  const createAssignment = async () => {
+    if (!newAssignment.value.title || !newAssignment.value.file) {
+      console.error("Title and file are required.");
+      return;
+    }
+
     try {
       const formData = new FormData();
-      formData.append("title", title);
-      formData.append("file", file);
-      formData.append("module", newContent.value.moduleId);
+      formData.append("title", newAssignment.value.title);
+      formData.append("file", newAssignment.value.file);
+      formData.append("module", moduleId.value); // Use the passed moduleId
 
-      const response = await axiosInstance.post("/api/assignments/", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      contents.value.push(response.data);
+      const response = await axiosInstance.post(
+        `/api/modules/${moduleId.value}/assignments/`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      contents.value.push({ ...response.data, isAssignment: true });
       resetNewAssignment();
     } catch (error) {
       console.error("Failed to create assignment:", error);

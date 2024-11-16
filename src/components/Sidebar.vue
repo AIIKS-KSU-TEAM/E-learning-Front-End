@@ -40,7 +40,7 @@ const { logout } = useLogout();
         </li>
         <li>
           <router-link
-            to="/module-contents"
+            to="/classroom"
             class="flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-blue-800"
           >
             <i class="fas fa-school mr-3"></i>
@@ -49,7 +49,7 @@ const { logout } = useLogout();
         </li>
         <li>
           <router-link
-            to="/course"
+            to="/profile"
             class="flex items-center py-2 px-4 rounded transition-colors duration-200 hover:bg-blue-800"
           >
             <i class="fas fa-user-circle mr-3"></i>

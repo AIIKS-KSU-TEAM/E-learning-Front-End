@@ -4,13 +4,13 @@ import { useRoute } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import useModuleContents from "@/composables/useModuleContents";
-import axiosInstance from "@/axiosconfig/axiosInstance"; // Ensure you have axiosInstance imported
+import axiosInstance from "@/axiosconfig/axiosInstance";
 
 const route = useRoute();
 const moduleId = ref(route.params.moduleId);
 const showContentForm = ref(false);
 const showAssignmentForm = ref(false);
-const moduleTitle = ref(""); // State for module name
+const moduleTitle = ref(""); 
 
 const {
   contents,
@@ -22,22 +22,22 @@ const {
   deleteContent,
   viewContent,
   fetchContents,
+  handleFileUpload,
 } = useModuleContents(moduleId);
 
-// Fetch contents and module name on mount
 onMounted(async () => {
   await fetchContents();
-  // Fetch module details separately
   try {
     const moduleResponse = await axiosInstance.get(
-      `/api/modules/${moduleId.value}/`,
+      `/api/modules/${moduleId.value}/`
     );
-    moduleTitle.value = moduleResponse.data.name; // Set the module name
+    moduleTitle.value = moduleResponse.data.name;
   } catch (error) {
     console.error("Failed to fetch module details:", error);
   }
 });
 </script>
+
 <template>
   <div>
     <Navbar />
@@ -65,9 +65,7 @@ onMounted(async () => {
         <!-- Forms -->
         <div v-if="showContentForm">
           <form
-            @submit.prevent="
-              createContent(newContent.contentType, newContent.content)
-            "
+            @submit.prevent="createContent(newContent.contentType, newContent.content)"
             class="mb-6 space-y-4"
           >
             <select
@@ -98,9 +96,7 @@ onMounted(async () => {
 
         <div v-if="showAssignmentForm">
           <form
-            @submit.prevent="
-              createAssignment(newAssignment.title, newAssignment.file)
-            "
+            @submit.prevent="createAssignment(newAssignment.title, newAssignment.file)"
             class="mb-6 space-y-4"
           >
             <input
@@ -129,20 +125,14 @@ onMounted(async () => {
           <div
             v-for="content in contents"
             :key="content.id"
-            :class="
-              content.isAssignment
-                ? 'border border-green-500 bg-green-100'
-                : 'border border-gray-300'
-            "
+            :class="content.isAssignment ? 'bg-green-100 border border-green-500' : 'border border-gray-300'"
             class="rounded-lg p-4 shadow-md"
           >
             <div class="mb-4">
               <span class="text-gray-800">
                 <strong
                   >{{
-                    content.isAssignment
-                      ? "ASSIGNMENT"
-                      : content.content_type | capitalize
+                    content.isAssignment ? "ASSIGNMENT" : content.content_type | capitalize
                   }}:</strong
                 >
                 {{ content.content || content.title }}

@@ -10,10 +10,28 @@ import Subjects from "@/views/Courses/Subjects.vue";
 import Courses from "@/views/Courses/Courses.vue";
 import Modules from "@/views/Courses/Modules.vue";
 import ModuleContents from "@/views/Courses/ModuleContents.vue";
+import Zoom from "@/views/Zoom.vue";
+import Profile from "@/views/Profile.vue";
+import SubjectList from "@/views/Students/SubjectList.vue";
+import CoursesList from "@/views/Students/CoursesList.vue";
+import ModulesList from "@/views/Students/ModulesList.vue";
+import ContentList from "@/views/Students/ContentList.vue";
+import StdProfile from "@/views/Students/StdProfile.vue";
+import StdClassroom from "@/views/Students/StdClassroom.vue";
+import Support from "@/views/Students/Support.vue";
+import AssignmentForm from "@/views/Students/AssignmentForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: '/subjects1', component: SubjectList, name: 'subjects' },
+    { path: '/subjects1/:subjectId/courses', component: CoursesList, name: 'courses' },
+    { path: '/subjects1/:subjectId/courses/:courseId/modules', component: ModulesList, name: 'modules' },
+    { path: '/subjects1/:subjectId/courses/:courseId/modules/:moduleId/contents', component: ContentList, name: 'contents' },
+    { path: '/stdprofile', component: StdProfile, name: 'stdprofile' },
+    { path: '/stdclassroom', component: StdClassroom, name: 'stdclassroom' },
+    { path: '/support', component: Support, name: 'support' },
+    { path: '/assignments', component: AssignmentForm, name: 'assignments' },
     {
       path: "/",
       name: "home",
@@ -45,7 +63,7 @@ const router = createRouter({
       component: Courses,
     },
     {
-      path: "/modules/:courseId",
+      path: "/subjects/:subjectId/courses/:courseId/modules",
       name: "Modules",
       component: Modules,
       props: true,
@@ -54,6 +72,16 @@ const router = createRouter({
       path: "/modules/:moduleId",
       name: "ModuleContents",
       component: ModuleContents,
+    },
+    {
+      path: "/classroom",
+      name: "classroom",
+      component: Zoom,
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: Profile,
     },
     {
       path: "/teacher",
